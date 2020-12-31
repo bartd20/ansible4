@@ -1,0 +1,13 @@
+---
+- gather_facts: off
+  hosts: nxos
+  tasks:
+    - nxos_command:
+        commands:
+          - show vlan
+          - show run int Ethernet1/3
+      register: out
+
+    - debug:
+        var: out
+      

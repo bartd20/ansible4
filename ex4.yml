@@ -1,0 +1,31 @@
+---
+- gather_facts: off
+  hosts: arista7
+  tasks:
+    - eos_vlans:
+        config:
+          - name: "{{ vlan_name }}"
+            vlan_id: "{{ vlan_id }}"
+        state: merged
+
+    - eos_l2_interfaces:
+        config:
+          - name: "{{ port }}"
+            access:
+              vlan: "{{ vlan_id }}"
+        state: merged
+
+    - eos_command:
+        commands:
+          - show vlan | json
+      register: out
+
+#    - debug:
+#        var: out
+
+    - assert:
+        that:
+          - out["stdout"][0]["vlans"]["234"]
+          - out["stdout"][0]["vlans"]["234"]["interfaces"]["Ethernet7"]
+
+

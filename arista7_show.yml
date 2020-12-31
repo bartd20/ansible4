@@ -1,0 +1,13 @@
+---
+- gather_facts: off
+  hosts: arista7
+  tasks:
+    - eos_command:
+        commands:
+          - show vlan
+          - show run int eth7
+      register: out
+
+    - debug:
+        var: out
+ 

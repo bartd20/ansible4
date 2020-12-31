@@ -1,0 +1,31 @@
+---
+- gather_facts: off
+  hosts: nxos
+  tasks:
+    - nxos_interfaces:
+        config:
+          - name: "{{ port3 }}"
+            mode: "{{ port3_type }}"
+        state: merged
+
+    - nxos_l2_interface:
+        name: "{{ port3 }}"
+        mode: "{{ port3_mode }}"
+
+    - nxos_l2_interfaces:
+        config:
+          - name: "{{ port3 }}"
+            trunk:
+              native_vlan: "{{ port3_native_vlan }}"
+        state: merged
+
+    - nxos_command:
+        commands: "show int {{ port3 }} trunk | json"
+      register: out
+
+    - assert:
+        that:
+          - out["stdout"][0]["TABLE_interface"]["ROW_interface"]["status"] == "trunking"
+          - out["stdout"][0]["TABLE_interface"]["ROW_interface"]["native"] == "4"
+
+

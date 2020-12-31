@@ -1,0 +1,24 @@
+---
+- gather_facts: off
+  hosts: nxos
+  tasks:
+    - nxos_l3_interfaces:
+        config:
+          - name: "{{ port }}"
+            ipv4:
+              - address: "{{ IP_addr }}/{{ IP_mask }}"
+        state: merged
+
+    - net_ping:
+        dest: 10.227.20.2
+      register: ping_out
+
+    - set_fact:
+        packet_loss: "{{ ping_out.packets_rx / ping_out.packets_tx }}"
+    
+    - assert:
+        that:
+          - packet_loss >= 1
+
+    - debug:
+        var: packet_loss

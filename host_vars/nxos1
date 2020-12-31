@@ -1,0 +1,10 @@
+---
+port: Ethernet1/4
+IP_addr: 10.227.20.1
+IP_mask: 24
+
+port3: Ethernet1/3
+port3_type: layer2
+port3_mode: trunk
+port3_native_vlan: 4
+

@@ -1,0 +1,11 @@
+---
+- gather_facts: off
+  hosts: nxos
+  tasks:
+    - nxos_command:
+        commands: show run interface Ethernet1/4
+      register: out
+
+    - debug:
+        var: out
+      

@@ -1,0 +1,12 @@
+---
+- gather_facts: off
+  hosts: cisco1
+  tasks:
+    - ios_system:
+        hostname: "{{ hostname }}"
+        domain_name: "{{ domain_name }}"
+        name_servers:
+          - "{{ ns1 }}"
+          - "{{ ns2 }}"
+
+ 
